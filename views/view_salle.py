@@ -13,12 +13,16 @@ class ViewSalle(ctk.CTk):
         self.geometry("800x500")
         self.frame_infos = ctk.CTkFrame(self)
         self.frame_infos.pack()
+        ctk.CTkLabel(self.frame_infos, text="Code").pack()
         self.code = ctk.CTkEntry(self.frame_infos)
         self.code.pack()
+        ctk.CTkLabel(self.frame_infos, text="Description").pack()
         self.description = ctk.CTkEntry(self.frame_infos)
         self.description.pack()
+        ctk.CTkLabel(self.frame_infos, text="Catégorie").pack()
         self.categorie = ctk.CTkEntry(self.frame_infos)
         self.categorie.pack()
+        ctk.CTkLabel(self.frame_infos, text="Capacité").pack()
         self.capacite = ctk.CTkEntry(self.frame_infos)
         self.capacite.pack()
         self.frame_actions = ctk.CTkFrame(self)
@@ -57,3 +61,13 @@ class ViewSalle(ctk.CTk):
             self.description.insert(0, salle.description)
             self.categorie.insert(0, salle.categorie)
             self.capacite.insert(0, salle.capacite)
+
+        def modifier_salle(self):
+            salle = Salle(
+                self.code.get(),
+                self.description.get(),
+                self.categorie.get(),
+                int(self.capacite.get())
+            )
+            self.service_salle.modifier_salle(salle)
+            self.refresh()

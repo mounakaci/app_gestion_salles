@@ -60,7 +60,9 @@ class DataSalle:
         crs.close()
         con.close()
 
-        return Salle(row[0], row[1], row[2], row[3])
+        if row:
+            return Salle(row[0], row[1], row[2], row[3])
+        return None
 
     def get_salles(self):
         con = self.get_connection()
