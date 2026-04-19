@@ -39,7 +39,7 @@ class ViewSalle(ctk.CTk):
         self.tree.pack()
         self.refresh()
 
-        def ajouter_salle(self):
+    def ajouter_salle(self):
             salle = Salle(
                 self.code.get(),
                 self.description.get(),
@@ -49,11 +49,11 @@ class ViewSalle(ctk.CTk):
             self.service_salle.ajouter_salle(salle)
             self.refresh()
 
-        def supprimer_salle(self):
+    def supprimer_salle(self):
             self.service_salle.supprimer_salle(self.code.get())
             self.refresh()
 
-        def rechercher_salle(self):
+    def rechercher_salle(self):
             salle = self.service_salle.rechercher_salle(self.code.get())
             self.description.delete(0, "end")
             self.categorie.delete(0, "end")
@@ -62,7 +62,7 @@ class ViewSalle(ctk.CTk):
             self.categorie.insert(0, salle.categorie)
             self.capacite.insert(0, salle.capacite)
 
-        def modifier_salle(self):
+    def modifier_salle(self):
             salle = Salle(
                 self.code.get(),
                 self.description.get(),
