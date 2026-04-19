@@ -31,13 +31,23 @@ class ViewSalle(ctk.CTk):
         ctk.CTkButton(self.frame_actions, text="Modifier", command=self.modifier_salle).pack()
         ctk.CTkButton(self.frame_actions, text="Supprimer", command=self.supprimer_salle).pack()
         ctk.CTkButton(self.frame_actions, text="Rechercher", command=self.rechercher_salle).pack()
-        self.tree = ttk.Treeview(self, columns=("code", "desc", "cat", "cap"), show="headings")
-        self.tree.heading("code", text="Code")
-        self.tree.heading("desc", text="Description")
-        self.tree.heading("cat", text="Categorie")
-        self.tree.heading("cap", text="Capacité")
-        self.tree.pack()
-        self.refresh()
+        self.cadreList = ctk.CTkFrame(self, corner_radius=10, width=400)
+        self.cadreList.pack(pady=10, padx=10)
+        self.treeList = ttk.Treeview(
+            self.cadreList,
+            columns=("code", "description", "categorie", "capacite"),
+            show="headings"
+        )
+        self.treeList.heading("code", text="CODE")
+        self.treeList.heading("description", text="Description")
+        self.treeList.heading("categorie", text="Catégorie")
+        self.treeList.heading("capacite", text="Capacité")
+        self.treeList.column("code", width=50)
+        self.treeList.column("description", width=150)
+        self.treeList.column("categorie", width=100)
+        self.treeList.column("capacite", width=100)
+        self.treeList.pack(expand=True, fill="both", padx=10, pady=10)
+        self.lister_salles()
 
     def ajouter_salle(self):
             salle = Salle(
@@ -47,11 +57,11 @@ class ViewSalle(ctk.CTk):
                 int(self.capacite.get())
             )
             self.service_salle.ajouter_salle(salle)
-            self.refresh()
+            self.lister_salles()
 
     def supprimer_salle(self):
             self.service_salle.supprimer_salle(self.code.get())
-            self.refresh()
+            self.lister_salles()
 
     def rechercher_salle(self):
             salle = self.service_salle.rechercher_salle(self.code.get())
@@ -61,7 +71,7 @@ class ViewSalle(ctk.CTk):
             self.description.insert(0, salle.description)
             self.categorie.insert(0, salle.categorie)
             self.capacite.insert(0, salle.capacite)
-
+            
     def modifier_salle(self):
             salle = Salle(
                 self.code.get(),
@@ -70,4 +80,11 @@ class ViewSalle(ctk.CTk):
                 int(self.capacite.get())
             )
             self.service_salle.modifier_salle(salle)
-            self.refresh()
+            self.lister_salles()
+
+    def lister_salles(self):
+        self.treeList.delete(*self.treeList.get_children())
+        liste = self.service_salle.recuperer_salles()
+        for s in liste:
+            self.treeList.insert("", "end", values=(s.code, s.description, s.categorie, s.capacite))
+
